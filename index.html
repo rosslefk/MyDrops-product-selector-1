@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <form id="quiz-container" style="display:none;">
+            <!-- STEP 1 -->
+            <div id="step-1">
+                <h2>Enter your information to being</h2>
+                <input id="input-name" type="text" placeholder="Name">
+                <input id="input-email" type="text" placeholder="Email">
+            </div>
+
+            <!-- STEP 2 
+            <div id="step-2">
+                <label for="input-fav-color">Favorite Color:</label>
+                <select id="input-fav-color">
+                    <option value="green">Green</option>
+                    <option value="red">Red</option>
+                    <option value="blue">Blue</option>
+                </select>
+            </div>
+-->
+
+
+            <!-- STEP 2 -->
+            <div id="step-2">
+                <label for="input-fav-color">When it comes to eye drops, are you:</label></br>
+                <input id="input-fav-color" name="Q2" type="radio" value="confused">Confused - which eye drops are right for you?<br>
+                <input id="input-fav-color" name="Q2" type="radio" value="busy">Too Busy - to make it to the store, so you go days without drops<br>
+                <input id="input-fav-color" name="Q2" type="radio" value="searching">Searching - you've tried many types and haven't found relief
+            </div>
+            
+
+            <!-- STEP 3 -->
+            <div id="step-3-green">
+                <p>
+                    We only show this if you picked Green
+                </p>
+                <input id="input-green-understood" type="checkbox" />
+                <label for="input-green-understood">Understood, I clicked green</label>
+            </div>
+
+            <div id="step-3-red">
+                <p>
+                    We only show this if you picked Red
+                </p>
+                <input id="input-red-understood" type="checkbox" />
+                <label for="input-red-understood">Understood, I clicked red</label>
+            </div>
+
+            <div id="step-3-blue">
+                <p>
+                    We only show this if you picked Blue
+                </p>
+                <input id="input-blue-understood" type="checkbox" />
+                <label for="input-blue-understood">Understood, I clicked blue</label>
+            </div>
+
+            <div id="step-4">
+                <h3>Quiz complete!</h3>
+                <img id="red-product" src="https://secure.img1-fg.wfcdn.com/lf/49/hash/36175/36706786/1/teacup-labrador-puppy-statue.jpg">
+                <img id="blue-product" src="http://cdn.akc.org/content/hero/puppy-boundaries_header.jpg">
+                <img id="green-product" src="https://s.abcnews.com/images/Lifestyle/puppy-ht-3-er-170907_4x3_992.jpg">
+            </div>
+            <a href="#" id="button-back">Back</a>
+            <a href="#" id="button-next">Next</a>
+            <button id="button-submit" type="submit">Submit</button>
+        </form>
+    </body>
+
+    <!-- We include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        // We're going to store all our data into a single object container
+        // this will make editing it / submitting it a little easier
+        var formData = {
+            name : null,
+            email : null,
+            favColor : null,
+            understood : null
+        };
+
+        // When the document is ready, we're going to run our script (inside this function) to control our quiz
+        $(document).ready(function() {
+            var $quizContainer = $('#quiz-container');
+            // create variables to store references to our question groups
+            var $step1 = $('#step-1');
+            var $step2 = $('#step-2');
+            var $step3Green = $('#step-3-green');
+            var $step3Red = $('#step-3-red');
+            var $step3Blue = $('#step-3-blue');
+            var $step4 = $('#step-4');
+
+            // store references to our individual inputs
+            var $inputName = $('#input-name');
+            var $inputEmail = $('#input-email');
+            var $inputFavColor = $('#input-fav-color');
+            var $inputBlueUnderstood = $('#input-blue-understood');
+            var $inputGreenUnderstood = $('#input-green-understood');
+            var $inputRedUnderstood = $('#input-red-understood');
+
+            // store references to the next button
+            var $backButton = $('#button-back');
+            var $nextButton = $('#button-next');
+            var $submitButton = $('#button-submit');
+
+            // store an internal variable that is tracking what step we're on
+            // this will make going forward/backwards a little easier
+            var step = 0;
+
+            // start off with everything hidden
+            hideAllSteps();
+            $submitButton.hide();
+            $step4.find('img').hide(); // hide all the product images inside step 4
+
+            // now go to step 1
+            gotoStep(1);
+
+            // listen for click events to our Next button
+            $nextButton.click(function() {
+                // based on which step we're on, we're going to make sure we have everything filled out correctly
+                // then will navigate to the correct next step
+                var nextStep;
+                switch (step) {
+                    case 1:
+                        // save their inputs
+                        formData.name = $inputName.val();
+                        formData.email = $inputEmail.val();
+
+                        // validate their inputs (make sure they're both not empty
+                        if (formData.name && formData.email) {
+                            nextStep = 2;
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=1;
+                        }
+                        break;
+                        /*
+                    case 2:
+                        // save their inputs
+                        formData.favColor = $inputFavColor.val();
+
+                        // validate their inputs (make sure they're both not empty
+                        if (formData.favColor) {
+                            // you could get clever too and say something like
+                            // nextStep = '3-' + formData.favColor
+                            // but let's be explicit
+                            if (formData.favColor === 'green') {
+                                nextStep = '3-green';
+                            } else if (formData.favColor === 'red') {
+                                nextStep = '3-red';
+                            } else if (formData.favColor === 'blue') {
+                                nextStep = '3-blue';
+                            }
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=2;
+                        }
+                        break;
+                        */
+                    case 2:
+                        var selValue = $('input[name=Q2]:checked').val(); 
+                        // validate their inputs (make sure they're both not empty
+                        if (selValue) {
+                            // you could get clever too and say something like
+                            // nextStep = '3-' + formData.favColor
+                            // but let's be explicit
+                            if (selValue  === 'confused') {
+                                nextStep = '3-green';
+                            } else if (selValue  === 'busy') {
+                                nextStep = '3-red';
+                            } else if (selValue  === 'searching') {
+                                nextStep = '3-blue';
+                            }
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=2;
+                        }
+                        break;
+                    case '3-blue':
+                        formData.understood = $inputBlueUnderstood.val();
+                        nextStep = 4;
+                        break;
+                    case '3-red':
+                        formData.understood = $inputRedUnderstood.val();
+                        nextStep = 4;
+                        break;
+                    case '3-green':
+                        formData.understood = $inputGreenUnderstood.val();
+                        nextStep = 4;
+                        break;
+                }
+
+                // at this step, we should know what our nextStep is and no we need to navigate to it
+                gotoStep(nextStep);
+            });
+
+            // listen for click events to our Back button
+            $backButton.click(function() {
+                // based on which step we're on, we're going to make sure we have everything filled out correctly
+                // then will navigate to the correct next step
+                var nextStep;
+                switch (step) {
+                    case 1:
+                        nextStep=1;
+                        break;
+                    case 2:
+                        nextStep=1;
+                        break;
+                    case '3-blue':
+                        nextStep = 2;
+                        break;
+                    case '3-red':
+                        nextStep = 2;
+                        break;
+                    case '3-green':
+                        nextStep = 2;
+                        break;
+                }
+                // at this step, we should know what our nextStep is and no we need to navigate to it
+                gotoStep(nextStep);
+            });
+
+
+            function gotoStep(s) {
+                // hide all steps, then we'll show the one we're on
+                hideAllSteps();
+
+                $quizContainer.show();
+
+                // now determine what to show
+                switch(s) {
+                    case 1:
+                        $step1.show();
+                        $backButton.hide();
+                        break;
+                    case 2:
+                        $step2.show();
+                        $backButton.show();
+                        break;
+                    case '3-blue':
+                        $step3Blue.show();
+                        break;
+                    case '3-red':
+                        $step3Red.show();
+                        break;
+                    case '3-green':
+                        $step3Green.show();
+                        break;
+                    case 4:
+                        // we show step 4, hide the next button, and show the submit button
+                        $step4.show();
+                        $nextButton.hide();
+                        $submitButton.show();
+                        break;
+                }
+
+                // record that we're on this new step
+                step = s;
+            }
+
+            // this function will hide everything on the page so we can selectively choose one thing
+            function hideAllSteps() {
+                $step1.hide();
+                $step2.hide();
+                $step3Green.hide();
+                $step3Red.hide();
+                $step3Blue.hide();
+                $step4.hide();
+            }
+
+            $quizContainer.on('submit', function (event) {
+                // we don't submit the form automatically
+                event.stopPropagation();
+
+                // here's where we can choose which product to show you based on your answers to the form
+                if (formData.favColor === 'red') {
+                    $('#red-product').show();
+                } else if (formData.favColor === 'blue') {
+                    $('#blue-product').show();
+                } else {
+                    $('#green-product').show();
+                }
+
+                // here is where we'd asynchronously save the form, but I need to look into Google Forms more first
+                // so for now I'm just writing the data to the page to prove we have it.
+                // TODO: Save form data to server
+                var answers = $('<p>');
+                answers.html(
+                    formData.name + '<br>'
+                    + formData.email + '<br>'
+                    + formData.favColor + '<br>'
+                    + ( formData.understood ? 'Yes' : 'No' ) + '<br>'
+                );
+                $quizContainer.append(answers);
+
+                return false;
+            })
+        });
+
+    </script>
+</html>
