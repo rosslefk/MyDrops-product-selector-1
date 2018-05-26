@@ -32,10 +32,10 @@
             
             <!-- STEP 3 -->
             <div id="step-3">
-                <label for="usage-drops">Q3 Have you used eye drops in the past?</label></br>
-                <input id="usage-drops" name="Q3" type="radio" value="confused">Long Time<br>
-                <input id="usage-drops" name="Q3" type="radio" value="busy">On / Off<br>
-                <input id="usage-drops" name="Q3" type="radio" value="searching">Never
+                <label>Q3 Have you used eye drops in the past?</label></br>
+                <input id="Q3a" name="Q3" type="radio" value="confused">Long Time<br>
+                <input id="Q3b" name="Q3" type="radio" value="busy">On / Off<br>
+                <input id="Q3c" name="Q3" type="radio" value="searching">Never
             </div>
 
             <!-- STEP 4 -->
@@ -57,9 +57,23 @@
             <!-- STEP 6-->
             <div id="step-6">
                 <label for="gender">Q6 Are you:</label></br>
-                <input id="gender" name="Q6" type="radio" value="couple">Male<br>
-                <input id="gender" name="Q6" type="radio" value="most">Female<br>
+                <input id="gender" name="Q6" type="radio" value="male">Male<br>
+                <input id="gender" name="Q6" type="radio" value="female">Female<br>
             </div>
+
+            <!-- STEP 7-->
+            <div id="step-7">
+                <label>Q7 Are you menopausal or perimenopausal:</label></br>
+                <input id="Q7a" name="Q7" type="radio" value="yes">Yes<br>
+                <input id="Q7b" name="Q7" type="radio" value="no">No<br>
+            </div>
+
+            <!-- STEP 8-->
+            <div id="step-8">
+                <label>Q8 How old are you?</label></br>
+                <input id="input-name" name="Q8" type="number">
+            </div>
+
 
 
             <!-- STEP 3 
@@ -119,10 +133,16 @@
             var $step4 = $('#step-4');
             var $step5 = $('#step-5');
             var $step6 = $('#step-6');
+            var $step7 = $('#step-7');
+            var $step8 = $('#step-8');
 
             // store references to our individual inputs
             var $inputName = $('#input-name');
             var $inputEmail = $('#input-email');
+            var $inputAge = $('#input-age');
+            var $Q3a = $('#Q3a');
+            var $Q3b = $('#Q3b');
+            var $Q3c = $('#Q3c');
             var $inputBlueUnderstood = $('#input-blue-understood');
             var $inputGreenUnderstood = $('#input-green-understood');
             var $inputRedUnderstood = $('#input-red-understood');
@@ -145,7 +165,9 @@
             gotoStep(1);
 
             // listen for click events to our Next button
-            $nextButton.click(function() {
+
+
+            function next() {
                 // based on which step we're on, we're going to make sure we have everything filled out correctly
                 // then will navigate to the correct next step
                 var nextStep;
@@ -279,11 +301,42 @@
                             nextStep=6;
                         }
                         break;
+                    case 7:
+                        var selValue = $('input[name=Q7]:checked').val(); 
+                        // validate their inputs (make sure they're both not empty
+                        if (selValue) {
+                            // you could get clever too and say something like
+                            // nextStep = '3-' + formData.favColor
+                            // but let's be explicit
+                            if (selValue  === 'yes') {
+                                nextStep = 8;
+                            } else if (selValue  === 'no') {
+                                nextStep = 8;
+                            }
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=7;
+                        }
+                        break; 
+                    case 8:
+                        formData.age = $inputAge.val();
+                        if (isNaN(formData.age)) {
+                            nextStep=9;
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=8;
+                        }
+                        break; 
                 }
 
                 // at this step, we should know what our nextStep is and no we need to navigate to it
                 gotoStep(nextStep);
-            });
+            };
+
+            $nextButton.click(next);
+            $Q3a.click(next);
+            $Q3b.click(next);
+            $Q3c.click(next);
 
             // listen for click events to our Back button
             $backButton.click(function() {
@@ -308,6 +361,12 @@
                         break;
                     case 6:
                         nextStep=5;
+                        break;
+                    case 7:
+                        nextStep=6;
+                        break;
+                    case 8:
+                        nextStep=7;
                         break;
 
                 }
@@ -344,6 +403,12 @@
                     case 6:
                         $step6.show();
                         break;
+                    case 7:
+                        $step7.show();
+                        break;
+                    case 8:
+                        $step8.show();
+                        break;
                 }
 
                 // record that we're on this new step
@@ -357,7 +422,9 @@
                 $step3.hide();
                 $step4.hide();
                 $step5.hide();
-                $step6.hide();              
+                $step6.hide();
+                $step7.hide();   
+                $step8.hide();              
             }
 
             $quizContainer.on('submit', function (event) {
