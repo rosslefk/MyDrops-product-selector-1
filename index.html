@@ -5,7 +5,7 @@
         <form id="quiz-container" style="display:none;">
             <!-- STEP 1 -->
             <div id="step-1">
-                <h2>Enter your information to being</h2>
+                <h2>Q1 Enter your information to being</h2>
                 <input id="input-name" type="text" placeholder="Name">
                 <input id="input-email" type="text" placeholder="Email">
             </div>
@@ -24,14 +24,45 @@
 
             <!-- STEP 2 -->
             <div id="step-2">
-                <label for="input-fav-color">When it comes to eye drops, are you:</label></br>
-                <input id="input-fav-color" name="Q2" type="radio" value="confused">Confused - which eye drops are right for you?<br>
-                <input id="input-fav-color" name="Q2" type="radio" value="busy">Too Busy - to make it to the store, so you go days without drops<br>
-                <input id="input-fav-color" name="Q2" type="radio" value="searching">Searching - you've tried many types and haven't found relief
+                <label for="about-you-drops">Q2 When it comes to eye drops, are you:</label></br>
+                <input id="about-you-drops" name="Q2" type="radio" value="confused">Confused - which eye drops are right for you?<br>
+                <input id="about-you-drops" name="Q2" type="radio" value="busy">Too Busy - to make it to the store, so you go days without drops<br>
+                <input id="about-you-drops" name="Q2" type="radio" value="searching">Searching - you've tried many types and haven't found relief
             </div>
             
-
             <!-- STEP 3 -->
+            <div id="step-3">
+                <label for="usage-drops">Q3 Have you used eye drops in the past?</label></br>
+                <input id="usage-drops" name="Q3" type="radio" value="confused">Long Time<br>
+                <input id="usage-drops" name="Q3" type="radio" value="busy">On / Off<br>
+                <input id="usage-drops" name="Q3" type="radio" value="searching">Never
+            </div>
+
+            <!-- STEP 4 -->
+            <div id="step-4">
+                <label for="usage-freq">Q4 How many drops do you use a day?</label></br>
+                <input id="usage-freq" name="Q4" type="radio" value="1">1<br>
+                <input id="usage-freq" name="Q4" type="radio" value="2-4">2-4<br>
+                <input id="usage-freq" name="Q4" type="radio" value="5+">5+
+            </div>
+
+            <!-- STEP 5 -->
+            <div id="step-5">
+                <label for="usage-freq-days">Q5 In an average week, how many days do you take your drops?</label></br>
+                <input id="usage-freq-days" name="Q5" type="radio" value="couple">A couple of days<br>
+                <input id="usage-freq-days" name="Q5" type="radio" value="most">Most days<br>
+                <input id="usage-freq-days" name="Q5" type="radio" value="every">Every day
+            </div>
+
+            <!-- STEP 6-->
+            <div id="step-6">
+                <label for="gender">Q6 Are you:</label></br>
+                <input id="gender" name="Q6" type="radio" value="couple">Male<br>
+                <input id="gender" name="Q6" type="radio" value="most">Female<br>
+            </div>
+
+
+            <!-- STEP 3 
             <div id="step-3-green">
                 <p>
                     We only show this if you picked Green
@@ -55,13 +86,9 @@
                 <input id="input-blue-understood" type="checkbox" />
                 <label for="input-blue-understood">Understood, I clicked blue</label>
             </div>
+            -->
 
-            <div id="step-4">
-                <h3>Quiz complete!</h3>
-                <img id="red-product" src="https://secure.img1-fg.wfcdn.com/lf/49/hash/36175/36706786/1/teacup-labrador-puppy-statue.jpg">
-                <img id="blue-product" src="http://cdn.akc.org/content/hero/puppy-boundaries_header.jpg">
-                <img id="green-product" src="https://s.abcnews.com/images/Lifestyle/puppy-ht-3-er-170907_4x3_992.jpg">
-            </div>
+            
             <a href="#" id="button-back">Back</a>
             <a href="#" id="button-next">Next</a>
             <button id="button-submit" type="submit">Submit</button>
@@ -88,15 +115,14 @@
             // create variables to store references to our question groups
             var $step1 = $('#step-1');
             var $step2 = $('#step-2');
-            var $step3Green = $('#step-3-green');
-            var $step3Red = $('#step-3-red');
-            var $step3Blue = $('#step-3-blue');
+            var $step3 = $('#step-3');
             var $step4 = $('#step-4');
+            var $step5 = $('#step-5');
+            var $step6 = $('#step-6');
 
             // store references to our individual inputs
             var $inputName = $('#input-name');
             var $inputEmail = $('#input-email');
-            var $inputFavColor = $('#input-fav-color');
             var $inputBlueUnderstood = $('#input-blue-understood');
             var $inputGreenUnderstood = $('#input-green-understood');
             var $inputRedUnderstood = $('#input-red-understood');
@@ -168,28 +194,90 @@
                             // nextStep = '3-' + formData.favColor
                             // but let's be explicit
                             if (selValue  === 'confused') {
-                                nextStep = '3-green';
+                                nextStep = 3;
                             } else if (selValue  === 'busy') {
-                                nextStep = '3-red';
+                                nextStep = 3;
                             } else if (selValue  === 'searching') {
-                                nextStep = '3-blue';
+                                nextStep = 3;
                             }
                         } else {
                             // What to do if they inputs are invalid? show some error? The choice is yours
                             nextStep=2;
                         }
                         break;
-                    case '3-blue':
-                        formData.understood = $inputBlueUnderstood.val();
-                        nextStep = 4;
+                    case 3:
+                        var selValue = $('input[name=Q3]:checked').val(); 
+                        // validate their inputs (make sure they're both not empty
+                        if (selValue) {
+                            // you could get clever too and say something like
+                            // nextStep = '3-' + formData.favColor
+                            // but let's be explicit
+                            if (selValue  === 'confused') {
+                                nextStep = 4;
+                            } else if (selValue  === 'busy') {
+                                nextStep = 4;
+                            } else if (selValue  === 'searching') {
+                                nextStep = 6;
+                            }
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=3;
+                        }
                         break;
-                    case '3-red':
-                        formData.understood = $inputRedUnderstood.val();
-                        nextStep = 4;
+                    case 4:
+                        var selValue = $('input[name=Q4]:checked').val(); 
+                        // validate their inputs (make sure they're both not empty
+                        if (selValue) {
+                            // you could get clever too and say something like
+                            // nextStep = '3-' + formData.favColor
+                            // but let's be explicit
+                            if (selValue  === '1') {
+                                nextStep = 5;
+                            } else if (selValue  === '2-4') {
+                                nextStep = 5;
+                            } else if (selValue  === '5+') {
+                                nextStep = 5;
+                            }
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=4;
+                        }
                         break;
-                    case '3-green':
-                        formData.understood = $inputGreenUnderstood.val();
-                        nextStep = 4;
+                    case 5:
+                        var selValue = $('input[name=Q5]:checked').val(); 
+                        // validate their inputs (make sure they're both not empty
+                        if (selValue) {
+                            // you could get clever too and say something like
+                            // nextStep = '3-' + formData.favColor
+                            // but let's be explicit
+                            if (selValue  === 'couple') {
+                                nextStep = 6;
+                            } else if (selValue  === 'most') {
+                                nextStep = 6;
+                            } else if (selValue  === 'every') {
+                                nextStep = 6;
+                            }
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=5;
+                        }
+                        break;
+                    case 6:
+                        var selValue = $('input[name=Q6]:checked').val(); 
+                        // validate their inputs (make sure they're both not empty
+                        if (selValue) {
+                            // you could get clever too and say something like
+                            // nextStep = '3-' + formData.favColor
+                            // but let's be explicit
+                            if (selValue  === 'male') {
+                                nextStep = 8;
+                            } else if (selValue  === 'female') {
+                                nextStep = 7;
+                            }
+                        } else {
+                            // What to do if they inputs are invalid? show some error? The choice is yours
+                            nextStep=6;
+                        }
                         break;
                 }
 
@@ -209,15 +297,19 @@
                     case 2:
                         nextStep=1;
                         break;
-                    case '3-blue':
-                        nextStep = 2;
+                    case 3:
+                        nextStep=2;
                         break;
-                    case '3-red':
-                        nextStep = 2;
+                    case 4:
+                        nextStep=3;
                         break;
-                    case '3-green':
-                        nextStep = 2;
+                    case 5:
+                        nextStep=4;
                         break;
+                    case 6:
+                        nextStep=5;
+                        break;
+
                 }
                 // at this step, we should know what our nextStep is and no we need to navigate to it
                 gotoStep(nextStep);
@@ -240,20 +332,17 @@
                         $step2.show();
                         $backButton.show();
                         break;
-                    case '3-blue':
-                        $step3Blue.show();
-                        break;
-                    case '3-red':
-                        $step3Red.show();
-                        break;
-                    case '3-green':
-                        $step3Green.show();
+                    case 3:
+                        $step3.show();
                         break;
                     case 4:
-                        // we show step 4, hide the next button, and show the submit button
                         $step4.show();
-                        $nextButton.hide();
-                        $submitButton.show();
+                        break;
+                    case 5:
+                        $step5.show();
+                        break;
+                    case 6:
+                        $step6.show();
                         break;
                 }
 
@@ -265,10 +354,10 @@
             function hideAllSteps() {
                 $step1.hide();
                 $step2.hide();
-                $step3Green.hide();
-                $step3Red.hide();
-                $step3Blue.hide();
+                $step3.hide();
                 $step4.hide();
+                $step5.hide();
+                $step6.hide();              
             }
 
             $quizContainer.on('submit', function (event) {
